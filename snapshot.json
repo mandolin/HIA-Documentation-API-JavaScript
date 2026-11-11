@@ -1,0 +1,16 @@
+{
+  "site": "javascript-api",
+  "publicationRepository": "mandolin/HIA-Documentation-API-JavaScript",
+  "repository": "mandolin/HIA-Documentation",
+  "commit": "26dc56634564f045471fecc8ed69d24c9e45ed9d",
+  "registrySha256": "e267e8642aa38b1aa30756c07dfc126b36994a774979890c14d7bb4b51d19dc6",
+  "tag": "javascript-api-26dc566",
+  "asset": "javascript-api-26dc566.tar.gz",
+  "gzipSha256": "23c9b3e9e67f9f0cbdfaf5c9f73892bf056ad6aa76d247672d7fc248ece9c086",
+  "tarSha256": "e0e2869fa7d33b5e7aeb8bdd3e598f83274c9b9a4a2326cd851a51c607ed8445",
+  "tarBytes": 104151040,
+  "reportSha256": "4cc0dc3855e002beda180de927e84292546e52201b6ad22a976e89f80397a025",
+  "files": 5882,
+  "bytes": 98059551,
+  "entriesPerLocale": 453
+}

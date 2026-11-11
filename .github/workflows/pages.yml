@@ -1,0 +1,87 @@
+name: JavaScript Documentation Tool API Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: javascript-api-pages
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Validate publication identity
+        id: snapshot
+        env:
+          EXPECTED_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re
+          from pathlib import Path
+          snapshot = json.loads(Path('snapshot.json').read_text())
+          assert snapshot['publicationRepository'] == os.environ['EXPECTED_REPOSITORY']
+          assert snapshot['repository'] == 'mandolin/HIA-Documentation'
+          assert re.fullmatch('[0-9a-f]{40}', snapshot['commit'])
+          assert re.fullmatch('javascript-api-[0-9a-f]{7,40}', snapshot['tag'])
+          assert snapshot['asset'] == snapshot['tag'] + '.tar.gz'
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('commit=' + snapshot['commit'] + '\n')
+          PY
+      - uses: actions/checkout@v4
+        with:
+          repository: mandolin/HIA-Documentation
+          ref: ${{ steps.snapshot.outputs.commit }}
+          path: build-owner
+          persist-credentials: false
+          sparse-checkout: |
+            scripts
+            reference
+      - name: Restore pinned registry checkout bytes
+        run: |
+          python3 - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          # 中文。只还原Git文本换行，选中的完整字节必须匹配生产时固定摘要。 English. Restore only Git text EOLs; all selected bytes must match the production-pinned digest.
+          registry = Path('build-owner/reference/javascript-reference-inputs.json')
+          raw = registry.read_bytes()
+          lf = raw.replace(b'\r\n', b'\n')
+          expected = json.loads(Path('snapshot.json').read_text())['registrySha256']
+          matching = [data for data in (raw, lf, lf.replace(b'\n', b'\r\n')) if hashlib.sha256(data).hexdigest() == expected]
+          if not matching:
+              raise ValueError('Pinned registry checkout bytes unavailable.')
+          registry.write_bytes(matching[0])
+          PY
+      - name: Check archive-validation regressions
+        run: python3 -m unittest discover -s build-owner/scripts -p test_javascript_reference_publication.py
+      - name: Download and validate the pinned JavaScript snapshot
+        env:
+          PUBLICATION_REPOSITORY: ${{ github.repository }}
+        run: |
+          tag=$(jq -er .tag snapshot.json)
+          asset=$(jq -er .asset snapshot.json)
+          curl --fail --silent --show-error --location --proto '=https' --http1.1 --retry 2 --max-time 180 --output "$RUNNER_TEMP/reference.tar.gz" "https://github.com/$PUBLICATION_REPOSITORY/releases/download/$tag/$asset"
+          curl --fail --silent --show-error --location --proto '=https' --http1.1 --retry 2 --max-time 120 --output "$RUNNER_TEMP/build-report.json" "https://github.com/$PUBLICATION_REPOSITORY/releases/download/$tag/build-report.json"
+          python3 build-owner/scripts/prepare_javascript_reference.py snapshot.json "$RUNNER_TEMP/reference.tar.gz" "$RUNNER_TEMP/build-report.json" "$RUNNER_TEMP/site"
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/site
+
+  deploy:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
