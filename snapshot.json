@@ -1,16 +1,16 @@
 {
+  "repository": "mandolin/HIA-Documentation",
+  "commit": "1cddf3fdd36f0594687b7994e9ec6d9142c4c8bc",
+  "tag": "javascript-api-1cddf3f",
+  "asset": "javascript-api-1cddf3f.tar.gz",
+  "gzipSha256": "d6bc21f14277136f1318b17517e80e7717026e09c6e3de085f20b993b3b488ec",
+  "tarSha256": "79e99ff5f8b7f7adb818f84f2b4baa474116857baee09b77c43f437ac359ea18",
+  "tarBytes": 105553920,
+  "reportSha256": "b9b83d49ff9312cad9ee4bcb7f975ce848bd1b66c023db2fa4a669cbb4a442d9",
+  "files": 5980,
+  "bytes": 100888803,
+  "entriesPerLocale": 462,
   "site": "javascript-api",
   "publicationRepository": "mandolin/HIA-Documentation-API-JavaScript",
-  "repository": "mandolin/HIA-Documentation",
-  "commit": "26dc56634564f045471fecc8ed69d24c9e45ed9d",
-  "registrySha256": "e267e8642aa38b1aa30756c07dfc126b36994a774979890c14d7bb4b51d19dc6",
-  "tag": "javascript-api-26dc566",
-  "asset": "javascript-api-26dc566.tar.gz",
-  "gzipSha256": "23c9b3e9e67f9f0cbdfaf5c9f73892bf056ad6aa76d247672d7fc248ece9c086",
-  "tarSha256": "e0e2869fa7d33b5e7aeb8bdd3e598f83274c9b9a4a2326cd851a51c607ed8445",
-  "tarBytes": 104151040,
-  "reportSha256": "4cc0dc3855e002beda180de927e84292546e52201b6ad22a976e89f80397a025",
-  "files": 5882,
-  "bytes": 98059551,
-  "entriesPerLocale": 453
+  "registrySha256": "e267e8642aa38b1aa30756c07dfc126b36994a774979890c14d7bb4b51d19dc6"
 }

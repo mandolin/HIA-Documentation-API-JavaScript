@@ -17,6 +17,12 @@ Generated files are supplied through the pinned release archive. To update the c
 
 本仓库发布HIA自身生成的JavaScript文档工具包API。完整正文、原生工件、源码映射及授权完整源文件均随固定归档交付。源码修改和正常构建由源仓维护，站点版本状态沿实际系统文档版本展示。
 
+## Command reference
+
+The generated reference includes `hia-jsdoc`, its options, positional input and execution rules. It provides localized usage, package and version identities, defaults, examples, exit results, static pages and authorized declaration-source links. Native descriptions, parser observations and original HIA documents remain available under `commands/` beside the independent website projection. Source positions are declaration-line anchors.
+
+中文。本站增加hia-jsdoc、选项、位置输入及执行规则，保留双语说明、包与版本身份、默认规则、示例、退出结果、无脚本页面及授权源码。commands目录独立保存原生描述、解析观察、原文档和网页投影，源码位置按声明行锚点解释。
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
